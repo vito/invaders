@@ -2,13 +2,14 @@ package invaders
 
 type Mask [Height][Width]int
 
-func (mask Mask) At(r, c int) int {
-	return mask[r][c]
-}
-
-func (mask *Mask) Overlay(other Mask) {
+func (mask *Mask) Overlay(other Mask, shade int) {
 	for r := range mask {
 		for c := range mask {
+			if other[r][c] == -1 {
+				mask[r][c] = other[r][c]
+				continue
+			}
+
 			if mask[r][c] == -1 {
 				continue
 			}
@@ -17,7 +18,7 @@ func (mask *Mask) Overlay(other Mask) {
 				continue
 			}
 
-			mask[r][c] = other[r][c]
+			mask[r][c] = shade
 		}
 	}
 }
@@ -104,7 +105,7 @@ var Eyes = []Mask{
 		{},
 		{0, 0, 0, 0, +1, 0, +1, 0, 0, 0, 0},
 		{0, 0, 0, 1, -1, 1, -1, 1, 0, 0, 0},
-		{0, 0, 0, 1, +1, 0, +1, 0, 0, 0, 0},
+		{0, 0, 0, 0, +1, 0, +1, 0, 0, 0, 0},
 	},
 	{ // tall eyes
 		{},

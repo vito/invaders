@@ -73,23 +73,13 @@ func (invader *Invader) build(r *rand.Rand, parts ...[]Mask) {
 	}
 
 	for _, masks := range parts {
-		mask.Overlay(masks[r.Intn(len(masks))])
+		mask.Overlay(masks[r.Intn(len(masks))], r.Intn(7)+1)
 	}
 
-	for row := range mask {
-		for col := range mask[row] {
-			distanceH := Middle - col
-			if distanceH < 0 {
-				distanceH = -distanceH
-			}
-
-			if col > Middle {
-				invader[row][col] = invader[row][Middle-distanceH]
-				continue
-			}
-
-			if mask[row][col] == 1 {
-				invader[row][col] = Shade(r.Intn(7) + 1)
+	for r, row := range mask {
+		for c, col := range row {
+			if col > 0 {
+				invader[r][c] = Shade(col)
 			}
 		}
 	}
